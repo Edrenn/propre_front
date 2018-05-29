@@ -6,12 +6,14 @@
 </template>
 
 <script>
-import Home from './components/Home'
+import Home from './components/Home';
+import Serverlist from './components/ServerList.vue';
+import LabelList from './components/LabelList.vue';
 
 export default {
   name: 'App',
   components: {
-    Home
+      Home,
   }
 }
 </script>
