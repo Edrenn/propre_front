@@ -2,10 +2,7 @@
   <div>
     <h1>{{ msg }} {{title}}</h1>
     <h4>Serveurs : </h4>
-    <ul>
-      <li><a href="">Serveur 1</a></li>
-      <li><a href="">Serveur 2</a></li>
-    </ul>
+    <server-list></server-list>
     <div id="app">
       <line-chart :data="data" />
     </div>
@@ -13,8 +10,12 @@
 </template>
 
 <script>
-export default {
+    import ServerList from './ServerList.vue';
+    import LabelList from './LabelList.vue';
+
+    export default {
   name: 'Home',
+        components:{ServerList, LabelList},
   data () {
     return {
       msg: 'Graph from server : ',
