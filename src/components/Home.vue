@@ -1,8 +1,14 @@
 <template>
   <div>
-    <h1>{{ msg }} {{title}}</h1>
     <h4>Serveurs : </h4>
-    <server-list></server-list>
+        <div>
+            <ul>
+                <li v-for="OneServer in ServerList">
+                    <input type="radio" class="radio-button" v-model="OneServer.id">
+                    {{OneServer.name}}
+                </li>
+            </ul>
+        </div>
     <div id="app">
       <line-chart :data="data" />
     </div>
@@ -12,14 +18,18 @@
 <script>
     import ServerList from './ServerList.vue';
     import LabelList from './LabelList.vue';
+    import axios from 'axios';
 
     export default {
   name: 'Home',
         components:{ServerList, LabelList},
   data () {
     return {
-      msg: 'Graph from server : ',
-      title: 'srv-DC-london_global',
+      ServerList: [],
+      OneServer: {
+          id: 0,
+          name :''
+      },
       data: [
         {
           name: 'cpu0',
@@ -39,7 +49,23 @@
         }
       ]
     }
-  }
+  },
+        mounted(){
+                    this.getServers();
+                },
+
+        methods:{
+            getServers: function () {
+
+                axios.get('http://127.0.0.1:8080/server')
+                    .then(res =>
+                        this.ServerList = res.data,
+                    ).catch(e => {
+                    this.errors.push(e);
+                })
+
+            }
+        }
 }
 
 

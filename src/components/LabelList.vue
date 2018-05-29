@@ -2,11 +2,18 @@
   <div>
     <h4>Labels : </h4>
     <div>
-      <ul>
+
+      <form id="test">
+        <div v-for="item in items">
+          <input :id="item.name" type="checkbox"> {{ item.name }}
+        </div>
+        <input type="submit" onclick="myFunction()">
+      </form>
+      <!--<ul>
         <li v-for="item in items">
           <input :id="item.name" type="checkbox"> {{ item.name }}
         </li>
-      </ul>
+      </ul>-->
     </div>
 
     <ul v-if="errors && errors.length">
@@ -18,7 +25,14 @@
 </template>
 
 <script>
+/*myFunction : function () {
+    //window.alert(document.getElementById("test").submit());
+       window.alert("oui");
+   }*/
+
 import axios from 'axios';
+
+
 
 export default {
   name: 'labellist',
@@ -39,6 +53,7 @@ export default {
         this.errors.push(e)
       })
       }
-}
 
+
+}
 </script>

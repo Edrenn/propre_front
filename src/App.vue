@@ -1,19 +1,20 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <labellist/>
+    <Home/>
   </div>
 </template>
 
 <script>
 import Home from './components/Home';
 import Serverlist from './components/ServerList.vue';
-import LabelList from './components/LabelList.vue';
+import labellist from './components/LabelList.vue';
 
 export default {
   name: 'App',
   components: {
       Home,
+      labellist
   }
 }
 </script>
