@@ -1,9 +1,12 @@
 <template>
     <div>
         <label>Date et heure de début du graph</label>
-        <input type="text" placeholder="DD/MM/AAAA hh:mm" v-model="timeStart">
-        <label>Date et heure de fin du graph</label>
-        <input type="text" placeholder="DD/MM/AAAA hh:mm" v-model="timeEnd">
+        <form>
+            <input type="text" placeholder="DD/MM/AAAA hh:mm" v-model="timeStart">
+            <label>Date et heure de fin du graph</label>
+            <input type="text" placeholder="DD/MM/AAAA hh:mm" v-model="timeEnd">
+        </form>
+        <button type="submit" @click="getData(timeStart, timeEnd)">submit</button>
         <line-chart :data="data" />
     </div>
 </template>
@@ -31,12 +34,12 @@
         },
 
         mounted(){
-            this.getData();
         },
 
         methods:{
-            getData: function() {
-
+            getData: function(timeStart, timeEnd) {
+                this.timeStart = timeStart;
+                this.timeEnd = timeEnd;
 
                 axios.post('http://localhost:8080/data',
                     {
