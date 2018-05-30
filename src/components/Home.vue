@@ -4,22 +4,28 @@
 
             <ul>
                 <li v-for="OneServer in ServerList">
-                    <button @click="updateSelectedServer(OneServer)">{{OneServer.name}}</button>
+                    <button @click="updateSelectedServer(OneServer.id)">{{OneServer.name}}</button>
                     <!--<input type="radio" class="radio-button" name="ServerButton" v-on:change="updateSelectedServer(OneServer)" >-->
 
-                    <div v-for="item in LabelIdList">
-                         <label v-if="testIdPresent(item,OneServer) === true"><input :id="item.id" :value="item.id" type="checkbox" v-model="CheckedList">{{ item.name }} </label>
+                    <div :id="OneServer.id" v-for="item in LabelIdList" v-if="serverId === OneServer.id">
+                         <label v-if="testIdPresent(item,OneServer) === true"><input :id="item.id" :value="item.id" type="checkbox" v-model="labelIds">{{ item.name }} </label>
                     </div>
                 </li>
 
             </ul>
-            <button @click="updateGraph(SelectedServer,CheckedList)">OK</button>
     <div id="app">
+    <div>
+            <label>Date et heure de début du graph</label>
+            <form>
+                <input type="text" placeholder="DD/MM/AAAA hh:mm" v-model="timeStart">
+                <label>Date et heure de fin du graph</label>
+                <input type="text" placeholder="DD/MM/AAAA hh:mm" v-model="timeEnd">
+            </form>
+            <button type="submit" @click="getData(timeStart, timeEnd,labelIds)">Valider</button>
       <line-chart :data="data" />
     </div>
-        </div>
-    <graphic-detail></graphic-detail>
   </div>
+</div>
 </template>
 
 <script>
@@ -35,14 +41,16 @@
             ServerList, LabelList},
   data () {
     return {
-      CheckedList: [],
-      CheckedServer: {},
       ServerList: [],
       LabelIdList: [],
-      SelectedServer: null,
+      LeftSelected: false,
       items: [],
       errors: [],
-      data: []
+      data: [],
+      serverId: 0,
+      labelIds: [],
+      timeStart: "04/01/2018 00:01",
+      timeEnd: "04/01/2018 01:11"
     }
   },
   mounted(){
@@ -70,14 +78,35 @@
         }
       },
 
-      updateGraph: function (server,datas) {
-        this.data = datas;
-        console.log(server.id,datas);
+      updateSelectedServer: function (serverId) {
+        if (this.serverId === serverId)
+        {
+          this.serverId = 0;
+        }
+        else
+        {
+          this.serverId = serverId;
+        }
       },
 
-      updateSelectedServer: function (server) {
-        this.SelectedServer = server;
-      }
+      getData: function(timeStart, timeEnd,CheckedList) {
+                      this.timeStart = timeStart;
+                      this.timeEnd = timeEnd;
+                      console.log(this.serverId);
+                      axios.post('http://localhost:8080/data',
+                          {
+                              serverId : this.serverId,
+                              labelIds : this.labelIds,
+                              timeStart : this.timeStart,
+                              timeEnd : this.timeEnd
+
+                          }).then(res => {
+                          this.data = res.data;
+                      }).catch(e => {
+                          this.errors.push(e);
+                      })
+
+                  }
   },
 
   created() {
