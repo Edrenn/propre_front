@@ -1,5 +1,11 @@
 <template>
-    <line-chart :data="data" />
+    <div>
+        <label>Date et heure de début du graph</label>
+        <input type="text" placeholder="DD/MM/AAAA hh:mm" v-model="timeStart">
+        <label>Date et heure de fin du graph</label>
+        <input type="text" placeholder="DD/MM/AAAA hh:mm" v-model="timeEnd">
+        <line-chart :data="data" />
+    </div>
 </template>
 
 <script>
