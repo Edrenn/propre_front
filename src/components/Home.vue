@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4>Serveurs : </h4>
-
+    <button @click="refreshFiles()">Refresh Files</button>
             <ul>
                 <li v-for="OneServer in ServerList">
                     <button @click="updateSelectedServer(OneServer.id)">{{OneServer.name}}</button>
@@ -88,6 +88,18 @@
           this.serverId = serverId;
         }
       },
+
+      refreshFiles: function () {
+              axios.get(`http://localhost:8080/file`)
+                      .then(response => {
+                        // JSON responses are automatically parsed.
+                        console.log("refreshOk");
+                      })
+                      .catch(e => {
+                        console.log("refreshPASOk");
+                        this.errors.push(e)
+                      })
+            },
 
       getData: function(timeStart, timeEnd,CheckedList) {
                       this.timeStart = timeStart;
