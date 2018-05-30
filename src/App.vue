@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+  <h1> GRAPH & FURIOUS 18 </h1>
+    <img src="./assets/vindiesel.jpg">
     <Home/>
   </div>
 </template>
