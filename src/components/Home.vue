@@ -17,6 +17,8 @@
     <div id="app">
       <line-chart :data="data" />
     </div>
+        </div>
+    <graphic-detail></graphic-detail>
   </div>
 </template>
 
@@ -24,10 +26,13 @@
     import ServerList from './ServerList.vue';
     import LabelList from './LabelList.vue';
     import axios from 'axios';
+    import GraphicDetail from "./GraphicDetail.vue";
 
     export default {
   name: 'Home',
-        components:{ServerList, LabelList},
+        components:{
+            GraphicDetail,
+            ServerList, LabelList},
   data () {
     return {
       CheckedList: [],
