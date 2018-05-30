@@ -1,18 +1,19 @@
 <template>
   <div>
     <h4>Serveurs : </h4>
-        <form>
+
             <ul>
                 <li v-for="OneServer in ServerList">
-                    <input type="radio" class="radio-button" v-model="OneServer.id" name="ServerButton" >
-                    {{OneServer.name}}
+                    <button @click="updateSelectedServer(OneServer)">{{OneServer.name}}</button>
+                    <!--<input type="radio" class="radio-button" name="ServerButton" v-on:change="updateSelectedServer(OneServer)" >-->
+
                     <div v-for="item in LabelIdList">
-                         <label v-if="testIdPresent(item,OneServer) === true"><input :id="item" type="checkbox">{{ item.name }} </label>
+                         <label v-if="testIdPresent(item,OneServer) === true"><input :id="item.id" :value="item.id" type="checkbox" v-model="CheckedList">{{ item.name }} </label>
                     </div>
                 </li>
+
             </ul>
-                    <input type="submit">
-        </form>
+            <button @click="updateGraph(SelectedServer,CheckedList)">OK</button>
     <div id="app">
       <line-chart :data="data" />
     </div>
@@ -29,33 +30,14 @@
         components:{ServerList, LabelList},
   data () {
     return {
+      CheckedList: [],
+      CheckedServer: {},
       ServerList: [],
       LabelIdList: [],
-      OneServer: {
-          id: 0,
-          name :'',
-          LabelIdList:[]
-      },
+      SelectedServer: null,
       items: [],
       errors: [],
-      data: [
-        {
-          name: 'cpu0',
-          data: {
-          '1515020486': 49.620000,
-          '1515020786':62.420000,
-          '1515021086': 47.970000
-          }
-        },
-        {
-          name: 'cpu1',
-          data: {
-          '1515020486': 60.310000,
-          '1515020786':66.060000,
-          '1515021086': 48.030000
-          }
-        }
-      ]
+      data: []
     }
   },
   mounted(){
@@ -64,7 +46,6 @@
 
   methods:{
       getServers: function () {
-
           axios.get('http://127.0.0.1:8080/server')
               .then(res =>
                   this.ServerList = res.data,
@@ -82,6 +63,15 @@
         else{
           return true;
         }
+      },
+
+      updateGraph: function (server,datas) {
+        this.data = datas;
+        console.log(server.id,datas);
+      },
+
+      updateSelectedServer: function (server) {
+        this.SelectedServer = server;
       }
   },
 
